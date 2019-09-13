@@ -15,7 +15,7 @@ inherit djbware useradd
 S = "${WORKDIR}/git"
 DJB_CONFIG_DIR = "${S}"
 
-SRCREV = "5526cf4499b9756d41e511422acd8cf47bb8c9c4"
+SRCREV = "b40600d9ee0aa6025f33f2644207e069315ca64c"
 SRC_URI = "git://github.com/bruceg/daemontools-encore.git \
 	   file://init-daemontools-encore.sh \
 	   file://sv-enc-via-ctrl-grp.sudoers \
