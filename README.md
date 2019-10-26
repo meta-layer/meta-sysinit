@@ -45,3 +45,7 @@ For `SUPERVISION_TYPE` following values are possible:
 * `s6`
 
 For `s6` as `SUPERVISION_TYPE` is only one provider available - `s6` itself. For `daemontools` as `SUPERVISION_TYPE` it's possible to choose between `daemontools` and `daemontools-encore` as `PREFERRED_PROVIDER`.
+
+### Recipe
+
+To use supervision in your recipe for your service, `inherit` from `supervised` and provide appropriate `run` script. Default logging is provided automatically. See [System::Image::Update](https://github.com/rehsack/meta-jens/tree/master/recipes-multifs/system-image) for example.
