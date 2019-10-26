@@ -12,8 +12,8 @@ index 74079ea..8574353 100644
  exec 2>/dev/null
  
 -/command/svc -dx /service/* /service/*/log
-+/usr/bin/svc -dx /etc/daemontools/service/* /etc/daemontools/service/*/log
++/usr/bin/svc -dx @SERVICE_ROOT@/* @SERVICE_ROOT@/*/log
  
 -env - PATH=$PATH svscan /service 2>&1 | \
-+env - PATH=$PATH svscan /etc/daemontools/service 2>&1 | \
++env - PATH=$PATH svscan @SERVICE_ROOT@ 2>&1 | \
  env - PATH=$PATH readproctitle service errors: ................................................................................................................................................................................................................................................................................................................................................................................................................

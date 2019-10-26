@@ -1,0 +1,6 @@
+SERVICE_RUN_SCRIPT_NAME   ?= "run"
+SERVICE_RUN_SCRIPT_TARGET ?= "run"
+SERVICE_LOG_SCRIPT_NAME   ?= "log"
+SERVICE_LOG_SCRIPT_TARGET ?= "log/run"
+
+MULTILOG_TOOL = "${bindir}/s6-log"

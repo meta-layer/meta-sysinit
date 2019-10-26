@@ -4,7 +4,7 @@ HOMEPAGE = "http://cr.yp.to/daemontools.html"
 LICENSE = "PD"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/PD;md5=b3597d12946881e13cb3b548d1173851"
 
-inherit djbware useradd
+inherit djbware supervision
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/${PV}-${PV}:"
 
@@ -21,10 +21,11 @@ SRC_URI = "http://cr.yp.to/daemontools/daemontools-0.76.tar.gz \
 SRC_URI[md5sum] = "1871af2453d6e464034968a0fbcb2bfc"
 SRC_URI[sha256sum] = "a55535012b2be7a52dcd9eccabb9a198b13be50d0384143bd3b32b8710df4c1f"
 
-USERADD_PACKAGES = "${PN}"
-GROUPADD_PARAM_${PN} = "-r svcctrl"
-
 DEPENDS += " update-rc.d-native"
+
+do_compile_append () {
+	sed -i -e 's,@SERVICE_ROOT[@],${SERVICE_ROOT},g' ${S}/command/svscanboot
+}
 
 do_install () {
     djbware_do_install

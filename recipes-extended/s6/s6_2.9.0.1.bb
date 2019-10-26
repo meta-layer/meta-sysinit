@@ -12,8 +12,7 @@ HOMEPAGE = "https://www.skarnet.org/software/s6/"
 SECTION = "base"
 DEPENDS = "skalibs execline"
 
-# inherit useradd
-inherit skaware
+inherit skaware supervision
 
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=a215fc090f57e8f048095cc6a7856cac"

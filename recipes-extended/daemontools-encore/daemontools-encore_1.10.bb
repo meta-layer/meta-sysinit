@@ -8,7 +8,7 @@ HOMEPAGE = "http://untroubled.org/daemontools-encore/"
 LICENSE = "PD"
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/PD;md5=b3597d12946881e13cb3b548d1173851"
 
-inherit djbware useradd
+inherit djbware supervision
 
 #FILESEXTRAPATHS_prepend := "${THISDIR}/${PV}-${PV}:"
 
@@ -23,9 +23,6 @@ SRC_URI = "git://github.com/bruceg/daemontools-encore.git \
 	   file://svscanboot-target-fs-adoptions.patch \
           "
 
-USERADD_PACKAGES = "${PN}"
-GROUPADD_PARAM_${PN} = "-r svcctrl"
-
 DEPENDS += " update-rc.d-native"
 
 do_configure_append () {
@@ -34,6 +31,7 @@ do_configure_append () {
 
 do_compile () {
     oe_runmake || die "make failed"
+    sed -i -e 's,@SERVICE_ROOT[@],${SERVICE_ROOT},g' ${S}/svscanboot
 }
 
 do_install () {
@@ -61,6 +59,3 @@ do_install () {
     install -d ${D}${sysconfdir}/sudoers.d
     install -m 600 ${WORKDIR}/sv-enc-via-ctrl-grp.sudoers ${D}${sysconfdir}/sudoers.d/sv-enc-via-ctrl-grp
 }
-
-PROVIDES = "daemontools"
-RPROVIDES_${PN} = "daemontools"
