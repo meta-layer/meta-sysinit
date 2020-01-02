@@ -4,7 +4,7 @@ SERVICE_NAME ?= "${PN}"
 SERVICE_DIR ?= "${SERVICE_ROOT}/${SERVICE_NAME}"
 
 DEPENDS += " virtual/supervision "
-RDEPENDS_${PN} = " supervision-runtime "
+RDEPENDS_${PN} += " supervision-runtime "
 
 do_compile_append() {
 	if test "${SERVICE_LOG_SCRIPT_NAME}" != "" -a ! -f ${WORKDIR}/${SERVICE_LOG_SCRIPT_NAME}
