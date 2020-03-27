@@ -12,9 +12,9 @@ DEPENDS = "skalibs"
 inherit skaware
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=a215fc090f57e8f048095cc6a7856cac"
+LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "3856ce50bfc3fc23d8b819f2a3970cf2af66882b"
+SRCREV = "e574acf58f57d30f02389fc4ddd36072a68ae4a2"
 SRC_URI = "git://git.skarnet.org/execline"
 
 EXTRA_OECONF += "\
