@@ -15,11 +15,12 @@ DEPENDS = "skalibs execline"
 inherit skaware supervision
 
 LICENSE = "ISC"
-LIC_FILES_CHKSUM = "file://COPYING;md5=a215fc090f57e8f048095cc6a7856cac"
+LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "2be881c031225e846814de91b20e5af7dfff71f5"
+SRCREV = "bfdb80fe56bb4e6ffd14d4754b4693863e1cddfa"
 SRC_URI = "\
 	git://git.skarnet.org/s6 \
+	file://0001-Treat-execline-as-an-extra_lib-instead-of-an-in-pack.patch \
 	file://sysv-init-s6.sh \
 	file://sv-enc-via-ctrl-grp.sudoers \
 	"
