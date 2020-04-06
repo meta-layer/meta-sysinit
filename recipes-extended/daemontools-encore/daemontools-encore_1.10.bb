@@ -26,7 +26,7 @@ DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-na
 INIT_D_DIR = "${sysconfdir}/init.d"
 
 do_configure_append () {
-    (cd ${S} && ./makemake)
+	(cd ${S} && ./makemake)
 }
 
 do_compile () {
@@ -37,32 +37,33 @@ do_compile () {
 }
 
 do_install () {
-    install -d ${D}/${bindir}
-    for i in `awk -F: '{print $6}' <BIN`
-    do
-	install -m 0755 ${S}/$i ${D}/${bindir}/
-    done
-    install -d ${D}/${mandir}/man8/
-    for i in `awk -F: '{print $6}' <MAN`
-    do
-	install -m 0644 ${S}/$i ${D}/${mandir}/man8/
-    done
+	install -d ${D}/${bindir}
+	for i in `awk -F: '{print $6}' <BIN`
+	do
+		install -m 0755 ${S}/$i ${D}/${bindir}/
+	done
 
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
-    then
-	install -d ${D}${INIT_D_DIR}
+	install -d ${D}/${mandir}/man8/
+	for i in `awk -F: '{print $6}' <MAN`
+	do
+		install -m 0644 ${S}/$i ${D}/${mandir}/man8/
+	done
 
-	# already installed by makefile - move it to right(tm) place
-	mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
+	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	then
+		install -d ${D}${INIT_D_DIR}
 
-	install -m 0755 ${WORKDIR}/init-daemontools-encore.sh ${D}${INIT_D_DIR}/init-daemontools-encore
-	update-rc.d -r ${D} init-daemontools-encore start 30 3 5 . stop 20 0 1 6 .
-    fi
+		# already installed by makefile - move it to right(tm) place
+		mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
 
-    # prepare for installing base-dir for services
-    install -d 0755 ${D}${SERVICE_ROOT}
+		install -m 0755 ${WORKDIR}/init-daemontools-encore.sh ${D}${INIT_D_DIR}/init-daemontools-encore
+		update-rc.d -r ${D} init-daemontools-encore start 30 3 5 . stop 20 0 1 6 .
+	fi
 
-    # allow %svcctrl to call svc
-    install -d ${D}${sysconfdir}/sudoers.d
-    install -m 600 ${WORKDIR}/sv-enc-via-ctrl-grp.sudoers ${D}${sysconfdir}/sudoers.d/sv-enc-via-ctrl-grp
+	# prepare for installing base-dir for services
+	install -d 0755 ${D}${SERVICE_ROOT}
+
+	# allow %svcctrl to call svc
+	install -d ${D}${sysconfdir}/sudoers.d
+	install -m 600 ${WORKDIR}/sv-enc-via-ctrl-grp.sudoers ${D}${sysconfdir}/sudoers.d/sv-enc-via-ctrl-grp
 }
