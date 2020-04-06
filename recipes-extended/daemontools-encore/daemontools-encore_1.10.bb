@@ -10,8 +10,6 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/PD;md5=b3597d12946881e13cb3b548
 
 inherit djbware supervision
 
-#FILESEXTRAPATHS_prepend := "${THISDIR}/${PV}-${PV}:"
-
 S = "${WORKDIR}/git"
 DJB_CONFIG_DIR = "${S}"
 
@@ -23,15 +21,19 @@ SRC_URI = "git://github.com/bruceg/daemontools-encore.git \
 	   file://svscanboot-target-fs-adoptions.patch \
           "
 
-DEPENDS += " update-rc.d-native"
+DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-native', '', d)}"
+
+INIT_D_DIR = "${sysconfdir}/init.d"
 
 do_configure_append () {
     (cd ${S} && ./makemake)
 }
 
 do_compile () {
-    oe_runmake || die "make failed"
-    sed -i -e 's,@SERVICE_ROOT[@],${SERVICE_ROOT},g' ${S}/svscanboot
+	oe_runmake || die "make failed"
+	sed -i  -e "s,@bindir[@],${bindir},g" -e "s,@SERVICE_ROOT[@],${SERVICE_ROOT},g" \
+		-e "s,@SERVICE_CTRL_GRP[@],${SERVICE_CTRL_GRP},g" -e "s,@INIT_D_DIR[@],${INIT_D_DIR},g" \
+		${S}/svscanboot ${WORKDIR}/sv-enc-via-ctrl-grp.sudoers ${WORKDIR}/init-daemontools-encore.sh
 }
 
 do_install () {
@@ -46,14 +48,19 @@ do_install () {
 	install -m 0644 ${S}/$i ${D}/${mandir}/man8/
     done
 
-    install -d ${D}${sysconfdir}/init.d
-    mv ${D}${bindir}/svscanboot ${D}${sysconfdir}/init.d/
-    install -m 0755 ${WORKDIR}/init-daemontools-encore.sh ${D}${sysconfdir}/init.d/init-daemontools-encore
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+    then
+	install -d ${D}${INIT_D_DIR}
 
-    update-rc.d -r ${D} init-daemontools-encore start 30 3 5 . stop 20 0 1 6 .
+	# already installed by makefile - move it to right(tm) place
+	mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
+
+	install -m 0755 ${WORKDIR}/init-daemontools-encore.sh ${D}${INIT_D_DIR}/init-daemontools-encore
+	update-rc.d -r ${D} init-daemontools-encore start 30 3 5 . stop 20 0 1 6 .
+    fi
 
     # prepare for installing base-dir for services
-    install -d 0755 ${D}${sysconfdir}/daemontools/service
+    install -d 0755 ${D}${SERVICE_ROOT}
 
     # allow %svcctrl to call svc
     install -d ${D}${sysconfdir}/sudoers.d

@@ -10,16 +10,16 @@
 
 case "$1" in
 	start)
-		/etc/init.d/svscanboot &
+		@INIT_D_DIR@/svscanboot &
 		;;
 	stop)
 		logger -s "Stopping services"
-		svc -d /etc/daemontools/service/*
+		svc -d @SERVICE_ROOT@/*
 		sleep 2
-		svstat /etc/daemontools/service/* | logger -s
-		svc -dk /etc/daemontools/service/*
+		svstat @SERVICE_ROOT@/* | logger -s
+		svc -dk @SERVICE_ROOT@/*
 		sleep 2
-		svstat /etc/daemontools/service/* | logger -s
+		svstat @SERVICE_ROOT@/* | logger -s
 
 		killall supervise
 		killall readproctitle
