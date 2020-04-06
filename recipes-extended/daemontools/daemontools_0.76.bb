@@ -32,21 +32,21 @@ do_compile_append () {
 }
 
 do_install_append () {
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
-    then
-	install -d ${D}${INIT_D_DIR}
+	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	then
+		install -d ${D}${INIT_D_DIR}
 
-	# already installed by makefile - move it to right(tm) place
-	mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
+		# already installed by makefile - move it to right(tm) place
+		mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
 
-	install -m 0755 ${WORKDIR}/init-daemontools.sh ${D}${INIT_D_DIR}/init-daemontools
-	update-rc.d -r ${D} init-daemontools start 30 3 5 . stop 20 0 1 6 .
-    fi
+		install -m 0755 ${WORKDIR}/init-daemontools.sh ${D}${INIT_D_DIR}/init-daemontools
+		update-rc.d -r ${D} init-daemontools start 30 3 5 . stop 20 0 1 6 .
+	fi
 
-    # prepare for installing base-dir for services
-    install -d 0755 ${D}${SERVICE_ROOT}
+	# prepare for installing base-dir for services
+	install -d 0755 ${D}${SERVICE_ROOT}
 
-    # allow %svcctrl to call svc
-    install -d ${D}${sysconfdir}/sudoers.d
-    install -m 600 ${WORKDIR}/sv-via-ctrl-grp.sudoers ${D}${sysconfdir}/sudoers.d/sv-via-ctrl-grp
+	# allow %svcctrl to call svc
+	install -d ${D}${sysconfdir}/sudoers.d
+	install -m 600 ${WORKDIR}/sv-via-ctrl-grp.sudoers ${D}${sysconfdir}/sudoers.d/sv-via-ctrl-grp
 }
