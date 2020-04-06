@@ -20,7 +20,7 @@ inherit skaware
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "27f27e2c967834e775bb7941f0848b7bf8425842"
+SRCREV = "20568ed2f00772e0a927ed21b7aa437c92ab8707"
 SRC_URI = "\
 	git://git.skarnet.org/skalibs \
 "
