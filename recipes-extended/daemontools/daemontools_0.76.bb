@@ -21,23 +21,30 @@ SRC_URI = "http://cr.yp.to/daemontools/daemontools-0.76.tar.gz \
 SRC_URI[md5sum] = "1871af2453d6e464034968a0fbcb2bfc"
 SRC_URI[sha256sum] = "a55535012b2be7a52dcd9eccabb9a198b13be50d0384143bd3b32b8710df4c1f"
 
-DEPENDS += " update-rc.d-native"
+DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-native', '', d)}"
+
+INIT_D_DIR = "${sysconfdir}/init.d"
 
 do_compile_append () {
-	sed -i -e 's,@SERVICE_ROOT[@],${SERVICE_ROOT},g' ${S}/command/svscanboot
+	sed -i  -e "s,@bindir[@],${bindir},g" -e "s,@SERVICE_ROOT[@],${SERVICE_ROOT},g" \
+		-e "s,@SERVICE_CTRL_GRP[@],${SERVICE_CTRL_GRP},g" -e "s,@INIT_D_DIR[@],${INIT_D_DIR},g" \
+		${S}/command/svscanboot ${WORKDIR}/sv-via-ctrl-grp.sudoers ${WORKDIR}/init-daemontools.sh
 }
 
-do_install () {
-    djbware_do_install
+do_install_append () {
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+    then
+	install -d ${D}${INIT_D_DIR}
 
-    install -d ${D}${sysconfdir}/init.d
-    mv ${D}${bindir}/svscanboot ${D}${sysconfdir}/init.d/
-    install -m 0755 ${WORKDIR}/init-daemontools.sh ${D}${sysconfdir}/init.d/init-daemontools
+	# already installed by makefile - move it to right(tm) place
+	mv ${D}${bindir}/svscanboot ${D}${INIT_D_DIR}
 
-    update-rc.d -r ${D} init-daemontools start 30 3 5 . stop 20 0 1 6 .
+	install -m 0755 ${WORKDIR}/init-daemontools.sh ${D}${INIT_D_DIR}/init-daemontools
+	update-rc.d -r ${D} init-daemontools start 30 3 5 . stop 20 0 1 6 .
+    fi
 
     # prepare for installing base-dir for services
-    install -d 0755 ${D}${sysconfdir}/daemontools/service
+    install -d 0755 ${D}${SERVICE_ROOT}
 
     # allow %svcctrl to call svc
     install -d ${D}${sysconfdir}/sudoers.d
