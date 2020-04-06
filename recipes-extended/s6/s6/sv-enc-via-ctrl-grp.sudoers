@@ -1,1 +1,1 @@
-%svcctrl   ALL= NOPASSWD: @bindir@/s6-svc,@bindir@/s6-svstat,@bindir@/s6-svok,@bindir@/s6-svup
+%@SERVICE_CTRL_GRP@   ALL= NOPASSWD: @bindir@/s6-svc,@bindir@/s6-svstat,@bindir@/s6-svok,@bindir@/s6-svup

@@ -12,14 +12,14 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 case "$1" in
 	start)
-		/etc/init.d/s6-svscanboot &
+		@INIT_D_DIR@/s6-svscanboot &
 		;;
 	stop)
 		logger -s "Stopping services"
 		@bindir@/s6-svc -d @SERVICE_ROOT@/*
 		sleep 2
 		@bindir@/s6-svstat @SERVICE_ROOT@/* | logger -s
-		/usr/bin/s6-svc -dk @SERVICE_ROOT@/*
+		@bindir@/s6-svc -dk @SERVICE_ROOT@/*
 		sleep 2
 		@bindir@/s6-svstat @SERVICE_ROOT@/* | logger -s
 
