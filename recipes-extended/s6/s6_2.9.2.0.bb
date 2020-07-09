@@ -17,10 +17,9 @@ inherit skaware supervision
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "bfdb80fe56bb4e6ffd14d4754b4693863e1cddfa"
+SRCREV = "fd1ac9f946604eb1c6626d589c8a8c4f2e820997"
 SRC_URI = "\
 	git://git.skarnet.org/s6 \
-	file://0001-Treat-execline-as-an-extra_lib-instead-of-an-in-pack.patch \
 	file://sysv-init-s6.sh \
 	file://sv-enc-via-ctrl-grp.sudoers \
 	"
