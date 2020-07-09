@@ -14,7 +14,7 @@ inherit skaware
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "e574acf58f57d30f02389fc4ddd36072a68ae4a2"
+SRCREV = "8cd8ebd0c26e93b2236a4acce0664c86ce945a7b"
 SRC_URI = "git://git.skarnet.org/execline"
 
 EXTRA_OECONF += "\
