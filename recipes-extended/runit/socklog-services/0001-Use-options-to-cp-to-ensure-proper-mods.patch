@@ -1,0 +1,33 @@
+From b1f46a4d7273ba9b446527dc3f50aa4c318acdd3 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 4 Jan 2019 18:15:18 -0800
+Subject: [PATCH] Use options to cp to ensure proper mods
+
+This ensures that permissions are in line when using staged installed in
+OE e.g.
+
+Upstream-Status: Pending
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 4f96b6e..4889229 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,8 +5,8 @@ install: all
+ 	install -Dm755 svlogtail ${DESTDIR}/usr/bin/svlogtail
+ 	install -Dm755 syslog-stripdate ${DESTDIR}/usr/bin/syslog-stripdate
+ 	mkdir -p ${DESTDIR}/etc ${DESTDIR}/var/log
+-	cp -a sv ${DESTDIR}/etc
+-	cp -a socklog ${DESTDIR}/var/log
++	cp -R --no-dereference --preserve=mode,links sv ${DESTDIR}/etc
++	cp -R --no-dereference --preserve=mode,links socklog ${DESTDIR}/var/log
+ 
+ clean:
+ 	rm -f nanoklogd
+-- 
+2.20.1
+
