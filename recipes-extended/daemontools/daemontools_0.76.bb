@@ -21,7 +21,7 @@ SRC_URI = "http://cr.yp.to/daemontools/daemontools-0.76.tar.gz \
 SRC_URI[md5sum] = "1871af2453d6e464034968a0fbcb2bfc"
 SRC_URI[sha256sum] = "a55535012b2be7a52dcd9eccabb9a198b13be50d0384143bd3b32b8710df4c1f"
 
-DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-native', '', d)}"
+DEPENDS += "${@bb.utils.contains("VIRTUAL-RUNTIME_initscripts", "initscripts", "update-rc.d-native", "", d)}"
 
 INIT_D_DIR = "${sysconfdir}/init.d"
 
@@ -32,7 +32,7 @@ do_compile_append () {
 }
 
 do_install_append () {
-	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	if test "${VIRTUAL-RUNTIME_initscripts}" = "initscripts"
 	then
 		install -d ${D}${INIT_D_DIR}
 

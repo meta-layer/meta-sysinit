@@ -31,11 +31,11 @@ EXTRA_OECONF += "\
 	--disable-allstatic \
 "
 
-DEPENDS += "${@bb.utils.contains("DISTRO_FEATURES", "sysvinit", "update-rc.d-native", "", d)}"
+DEPENDS += "${@bb.utils.contains("VIRTUAL-RUNTIME_initscripts", "initscripts", "update-rc.d-native", "", d)}"
 
 INIT_D_DIR = "${sysconfdir}/init.d"
 
-do_compile_sysvinit() {
+do_compile_initscripts() {
 	sed -i	-e "s,/command,${bindir},g" -e "s,\([[:space:]]\)/\<service\>,\1${SERVICE_ROOT},g" \
 		-e "s,@bindir[@],${bindir},g" -e "s,@SERVICE_ROOT[@],${SERVICE_ROOT},g" \
 		-e "s,@SERVICE_CTRL_GRP[@],${SERVICE_CTRL_GRP},g" -e "s,@INIT_D_DIR[@],${INIT_D_DIR},g" \
@@ -43,14 +43,14 @@ do_compile_sysvinit() {
 }
 
 do_compile_append() {
-	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	if test "${VIRTUAL-RUNTIME_initscripts}" = "initscripts"
 	then
-		do_compile_sysvinit
+		do_compile_initscripts
 	fi
 }
 
 do_install_append() {
-	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	if test "${VIRTUAL-RUNTIME_initscripts}" = "initscripts"
 	then
 		install -d ${D}${INIT_D_DIR}
 		install -m 0755 ${S}/examples/s6-svscanboot ${D}${INIT_D_DIR}

@@ -21,7 +21,7 @@ SRC_URI = "git://github.com/bruceg/daemontools-encore.git \
 	   file://svscanboot-target-fs-adoptions.patch \
           "
 
-DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-native', '', d)}"
+DEPENDS += "${@bb.utils.contains("VIRTUAL-RUNTIME_initscripts", "initscripts", "update-rc.d-native", "", d)}"
 
 INIT_D_DIR = "${sysconfdir}/init.d"
 
@@ -49,7 +49,7 @@ do_install () {
 		install -m 0644 ${S}/$i ${D}/${mandir}/man8/
 	done
 
-	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
+	if test "${VIRTUAL-RUNTIME_initscripts}" = "initscripts"
 	then
 		install -d ${D}${INIT_D_DIR}
 
