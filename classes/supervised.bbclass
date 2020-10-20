@@ -26,7 +26,7 @@ def supervised_compile_append_code(d):
             code.append('test -d "%s" || mkdir -p "%s"' % (target_log_dir, target_log_dir))
             code.append('exec "%s" t "%s"' % (d.getVar('MULTILOG_TOOL'), target_log_dir))
             code.append('EOF')
-            code.append('')
+            code.append('	:')
 
     return '\n'.join(code)
 
