@@ -21,7 +21,7 @@ inherit skaware
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "38e660fa8ea823e3608ecfbb903cff01f2566daa"
+SRCREV = "1fea1f6ed53cae7f752c9a78271c7c8367b0ad03"
 SRC_URI = "git://git.skarnet.org/s6-networking"
 
 EXTRA_OECONF += "\
