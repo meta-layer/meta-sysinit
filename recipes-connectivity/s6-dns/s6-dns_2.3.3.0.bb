@@ -12,7 +12,7 @@ inherit skaware
 LICENSE = "ISC"
 LIC_FILES_CHKSUM = "file://COPYING;md5=2875ff3bd035b06bc171bb0e55a5f228"
 
-SRCREV = "2dc2036c729b9611093cb90a9329d001bf778e6a"
+SRCREV = "7ed3fb46886941a50e85e093699e084b9c9fa875"
 SRC_URI = "git://git.skarnet.org/s6-dns"
 
 EXTRA_OECONF += "\
