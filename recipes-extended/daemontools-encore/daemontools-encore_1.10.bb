@@ -25,7 +25,7 @@ DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-na
 
 INIT_D_DIR = "${sysconfdir}/init.d"
 
-do_configure_append () {
+do_configure:append () {
 	(cd ${S} && ./makemake)
 }
 

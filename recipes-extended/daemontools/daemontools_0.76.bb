@@ -6,7 +6,7 @@ LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/PD;md5=b3597d12946881e13cb3b548
 
 inherit djbware supervision
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PV}-${PV}:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PV}-${PV}:"
 
 S = "${WORKDIR}/admin/${PN}-${PV}"
 
@@ -25,13 +25,13 @@ DEPENDS += " ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'update-rc.d-na
 
 INIT_D_DIR = "${sysconfdir}/init.d"
 
-do_compile_append () {
+do_compile:append () {
 	sed -i  -e "s,@bindir[@],${bindir},g" -e "s,@SERVICE_ROOT[@],${SERVICE_ROOT},g" \
 		-e "s,@SERVICE_CTRL_GRP[@],${SERVICE_CTRL_GRP},g" -e "s,@INIT_D_DIR[@],${INIT_D_DIR},g" \
 		${S}/command/svscanboot ${WORKDIR}/sv-via-ctrl-grp.sudoers ${WORKDIR}/init-daemontools.sh
 }
 
-do_install_append () {
+do_install:append () {
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
 	then
 		install -d ${D}${INIT_D_DIR}

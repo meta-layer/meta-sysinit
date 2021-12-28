@@ -6,7 +6,7 @@ SERVICE_DIR_${PN} ?= "${SERVICE_ROOT}/${SERVICE_NAME_${PN}}"
 DEPENDS += " virtual/supervision "
 SUPERVISED_PACKAGES ?= "${PN}"
 
-def supervised_compile_append_code(d):
+def supervised_compile_inject_code(d):
     code = []
     workdir = d.getVar('WORKDIR')
     localstatedir = d.getVar('localstatedir')
@@ -30,12 +30,12 @@ def supervised_compile_append_code(d):
 
     return '\n'.join(code)
 
-do_compile_append() {
+do_compile:append() {
 	# compile / create supervised default scripts
-${@supervised_compile_append_code(d)}
+${@supervised_compile_inject_code(d)}
 }
 
-def supervised_install_append_code(d):
+def supervised_install_inject_code(d):
     code = []
     destdir = d.getVar('D')
     workdir = d.getVar('WORKDIR')
@@ -71,13 +71,13 @@ def supervised_install_append_code(d):
 
     return '\n'.join(code)
 
-do_install_append() {
+do_install:append() {
 	# install supervised service scripts
-${@supervised_install_append_code(d)}
+${@supervised_install_inject_code(d)}
 }
 
-PACKAGESPLITFUNCS_prepend = "populate_packages_supervised "
-PACKAGESPLITFUNCS_remove_class-nativesdk = "populate_packages_supervised "
+PACKAGESPLITFUNCS:prepend = "populate_packages_supervised "
+PACKAGESPLITFUNCS:remove_class-nativesdk = "populate_packages_supervised "
 
 populate_packages_supervised[vardepsexclude] += "OVERRIDES"
 

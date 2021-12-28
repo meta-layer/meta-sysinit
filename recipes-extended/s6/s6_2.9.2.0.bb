@@ -42,14 +42,14 @@ do_compile_sysvinit() {
 		${S}/examples/s6-svscanboot ${WORKDIR}/sysv-init-s6.sh ${WORKDIR}/sv-enc-via-ctrl-grp.sudoers
 }
 
-do_compile_append() {
+do_compile:append() {
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
 	then
 		do_compile_sysvinit
 	fi
 }
 
-do_install_append() {
+do_install:append() {
 	if ${@bb.utils.contains('DISTRO_FEATURES', 'sysvinit', 'true', 'false', d)}
 	then
 		install -d ${D}${INIT_D_DIR}
